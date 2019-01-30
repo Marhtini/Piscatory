@@ -4,7 +4,6 @@
 
 # TODO: Add Text Generation
 # TODO: Ability to change threshold values
-# TODO: Remove need to re-enter API Key every time
 
 import tweepy
 from textblob import *
