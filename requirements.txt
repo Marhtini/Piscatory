@@ -1,0 +1,4 @@
+tweepy
+textblob
+bs4
+lxml
