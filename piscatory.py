@@ -4,6 +4,7 @@
 
 # TODO: Add Text Generation
 # TODO: Ability to change threshold values
+# TODO: Remove need to re-enter API Key every time
 
 import tweepy
 from textblob import *
@@ -43,9 +44,10 @@ def main():
             top_news_analysis()
         elif user_option == '3':
             print("Thanks for stopping by!")
-            return 0
-        else:
-            print("Invalid Selection!")
+            quit()
+    else:
+        print("Invalid Selection!")
+        main()
 
     while check_again == 0:
         user_decision = raw_input("Would you like to search for another keyword? (y/n)\n")
@@ -196,5 +198,5 @@ def top_news_analysis():
 
 if __name__ == "__main__":
     main()
-
-
+    
+    
