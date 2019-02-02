@@ -15,20 +15,8 @@ from bs4 import BeautifulSoup as soup
 
 
 def main():
-    print('\n><(((0>  ___  _____  ___   _____         _______  _____   _____          <0)))><')
-    print('><(((0> |   |   |   |     |         /\      |    |     | |     | \     / <0)))><')
-    print('><(((0> |___|   |   |___  |        /  \     |    |     | |_____|  \___/  <0)))><')
-    print('><(((0> |       |       | |       / -- \    |    |     | |    \     |    <0)))><')
-    print('><(((0> |     __|__  ___| |_____ /      \   |    |_____| |     \    |    <0)))><')
-    print("><(((0>                                                                  <0)))><\n")
-    print("Sentiment Analysis for Phishing!")
-    print("@Marhtini")
-    print("Using Twitter, the news, and TextBlob (NLP) to analyze the sentiment and polarity of subjects to")
-    print("determine the potential effectiveness of a phishing ruse!")
-    print("Polarization Range: -1.0 (Very Polarizing) to 1.0 (Not Very Polarizing)")
-    print("Subjectivity Range: 0.0 (Very Objective) to 1.0 (Very Subjective)")
-    print("\n")
 
+    display_banner()
     check_again = 0
     user_option = '0'
     user_decision = 0
@@ -59,6 +47,31 @@ def main():
                 check_again = 1
             else:
                 print("Invalid Input Detected!\n")
+
+
+def display_banner():
+
+    '''
+
+    display_banner(): Well... it displays the banner.
+
+    '''
+
+    print('\n><(((0>  ___  _____  ___   _____         _______  _____   _____          <0)))><')
+    print('><(((0> |   |   |   |     |         /\      |    |     | |     | \     / <0)))><')
+    print('><(((0> |___|   |   |___  |        /  \     |    |     | |_____|  \___/  <0)))><')
+    print('><(((0> |       |       | |       / -- \    |    |     | |    \     |    <0)))><')
+    print('><(((0> |     __|__  ___| |_____ /      \   |    |_____| |     \    |    <0)))><')
+    print("><(((0>                                                                  <0)))><\n")
+    print("Sentiment Analysis for Phishing!")
+    print("@Marhtini")
+    print("Using Twitter, the news, and TextBlob (NLP) to analyze the sentiment and polarity of subjects to")
+    print("determine the potential effectiveness of a phishing ruse!")
+    print("Polarization Range: -1.0 (Very Polarizing) to 1.0 (Not Very Polarizing)")
+    print("Subjectivity Range: 0.0 (Very Objective) to 1.0 (Very Subjective)")
+    print("\n")
+
+    return 0
 
 
 def api_configure():
@@ -174,21 +187,21 @@ def top_news_analysis():
         if analyze.polarity < 0 and analyze.subjectivity > .5:
             print("HIGHLY Recommended! It's highly polarizing and highly subjective!")
             print(news_item.title.text)
-            print(news_item.link.text)
+            print(news_item.link.text)  # TODO: Use this value to get the content of the page and generate text
             print(news_item.pubDate.text)
             print(analyze.sentiment)
             print("\n")
         elif analyze.polarity < 0 and analyze.subjectivity < .5:
             print("Recommended! It's highly polarizing!")
             print(news_item.title.text)
-            print(news_item.link.text)
+            print(news_item.link.text)  # TODO: Use this value to get the content of the page and generate text
             print(news_item.pubDate.text)
             print(analyze.sentiment)
             print("\n")
         elif analyze.subjectivity > .5 and analyze.polarity > 0:
             print("Recommended! It's highly subjective!")
             print(news_item.title.text)
-            print(news_item.link.text)
+            print(news_item.link.text)  # TODO: Use this value to get the content of the page and generate text
             print(news_item.pubDate.text)
             print(analyze.sentiment)
             print("\n")
@@ -196,7 +209,29 @@ def top_news_analysis():
     main()
 
 
+def prepare_data():
+
+    '''
+
+    TODO: Pass text from a URL to text_generator(). This data needs to be prepped in this function.
+
+    '''
+
+
+
+
+def text_generator():
+
+    '''
+
+    TODO: Using Keras or Tensorflow?
+    TODO: Get list of URL Links, visit, and use that as the data source for Keras or TensorFlow.
+
+    '''
+
+
+
+
 if __name__ == "__main__":
     main()
-    
-    
+
