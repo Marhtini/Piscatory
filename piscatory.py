@@ -4,14 +4,17 @@
 
 # TODO: Add Text Generation
 # TODO: Ability to change threshold values
-# TODO: Remove need to re-enter API Key every time
+# TODO: textgenrnn? Maybe we need to use a recurrent neural network to generate the text
+# TODO: Warn people about the GPU strain?
+# TODO: Warn people about Skynet?
 
 import tweepy
 from textblob import *
 from pip._vendor.distlib.compat import raw_input
 from urllib.request import *
 from bs4 import BeautifulSoup as soup
-#import lxml   MAKE SURE TO INSTALL THIS VIA PIP
+import lxml
+# import tensorflow # TODO: TensorFlow Support on 3.7 is buggy at best... might need to fix versioning.
 
 
 def main():
@@ -206,30 +209,57 @@ def top_news_analysis():
             print(analyze.sentiment)
             print("\n")
 
+    text_generator_question = raw_input("Would you like to try to generate starter text? (EXPERIMENTAL)")
+
+
+    # TODO: TensorFlow Support on 3.7 is buggy at best... might need to fix versioning.
+    '''
+    if text_generator_question in ('y', 'n', 'ye', 'no', 'yes', 'Y', 'YE', 'YES', 'N', 'NO'):
+        if text_generator_question in ('y', 'ye', 'yes', 'Y', 'YE', 'YES'):
+            prepare_data(news_page) # TODO: PREPARE_DATA()
+        elif text_generator_question in ('n', 'no', 'N', 'NO'):
+            print("Continuing!")
+        else:
+            print("Invalid Input. Continuing!") # TODO: This is kind of lazy. Fix this with an actually while loop!
+    '''
     main()
 
 
-def prepare_data():
+def prepare_data(news_page):
 
     '''
 
     TODO: Pass text from a URL to text_generator(). This data needs to be prepped in this function.
+    TODO: IMPORTANT NOTE: There's going to be some processing involved locally :)
+    # TODO: TensorFlow Support on 3.7 is buggy at best... might need to fix versioning.
 
     '''
 
+    # IS the data already prepared? Is this a redundant step? AM I REDUNDANT?
+    text_generator(news_page)
 
 
-
-def text_generator():
+def text_generator(news_page):
 
     '''
 
     TODO: Using Keras or Tensorflow?
     TODO: Get list of URL Links, visit, and use that as the data source for Keras or TensorFlow.
+    # TODO: TensorFlow Support on 3.7 is buggy at best... might need to fix versioning.
 
     '''
 
+    try:
+        from textgenrnn import textgenrnn
+    except ImportError:
+        raise ImportError('[!] TextGenRNN import Error. Probably having to do with TensorFlow issues. Text Generation (EXPERIMENTAL) may not work!')
 
+    # WIN10:
+    # pip install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.12.0-py3-none-any.whl
+
+    # generate_text = textgenrnn()
+
+    print(news_page)
 
 
 if __name__ == "__main__":
