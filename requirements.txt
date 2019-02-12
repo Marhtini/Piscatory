@@ -1,4 +1,7 @@
 tweepy
 textblob
+urllib
 bs4
 lxml
+tensorflow
+newspaper3k
