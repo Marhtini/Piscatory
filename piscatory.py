@@ -1,12 +1,11 @@
 # PISCATORY!
 # For Phishing Effectiveness!
+# Note: TensorFlow support for Python 3.7 is bad. Use 3.6 if you want to use experimental features!
 # @Marhtini
 
-# TODO: Add Text Generation
+# TODO: Text Generation Tweaking (Epochs, Config Files, Temp)
 # TODO: Ability to change threshold values
-# TODO: textgenrnn? Maybe we need to use a recurrent neural network to generate the text
-# TODO: Warn people about the GPU strain?
-# TODO: Warn people about Skynet?
+# TODO: Add Python Version Checking for TextGenRNN (Use 3.6 for now!)
 
 import tweepy
 from textblob import *
@@ -14,8 +13,8 @@ from pip._vendor.distlib.compat import raw_input
 from urllib.request import *
 from bs4 import BeautifulSoup as soup
 import lxml
-# import tensorflow # TODO: TensorFlow Support on 3.7 is buggy at best... might need to fix versioning.
-
+import tensorflow
+from newspaper import Article
 
 def main():
 
@@ -160,6 +159,9 @@ def top_news_analysis():
 
     """
 
+    url_dict = {}  # Dictonary with Numbered Key for Text Generation Selection
+    url_dict_key = 0
+
     user_news_source_choice = raw_input("Would you like to use a custom RSS news source? (y/n): ")
     if user_news_source_choice in ('y', 'n', 'ye', 'no', 'yes', 'Y', 'YE', 'YES', 'N', 'NO'):
         if user_news_source_choice in ('y', 'ye', 'yes', 'Y', 'YE', 'YES'):
@@ -190,62 +192,96 @@ def top_news_analysis():
         if analyze.polarity < 0 and analyze.subjectivity > .5:
             print("HIGHLY Recommended! It's highly polarizing and highly subjective!")
             print(news_item.title.text)
-            print(news_item.link.text)  # TODO: Use this value to get the content of the page and generate text
+            print(news_item.link.text)
+            url_dict.update({url_dict_key:news_item.link.text})
+            url_dict_key += 1
+            #url_list.append(news_item.link.text) # Add to URL List
             print(news_item.pubDate.text)
             print(analyze.sentiment)
             print("\n")
         elif analyze.polarity < 0 and analyze.subjectivity < .5:
             print("Recommended! It's highly polarizing!")
             print(news_item.title.text)
-            print(news_item.link.text)  # TODO: Use this value to get the content of the page and generate text
+            print(news_item.link.text)
+            url_dict.update({url_dict_key: news_item.link.text})
+            url_dict_key += 1
+            #url_list.append(news_item.link.text)  # Add to URL List
             print(news_item.pubDate.text)
             print(analyze.sentiment)
             print("\n")
         elif analyze.subjectivity > .5 and analyze.polarity > 0:
             print("Recommended! It's highly subjective!")
             print(news_item.title.text)
-            print(news_item.link.text)  # TODO: Use this value to get the content of the page and generate text
+            print(news_item.link.text)
+            url_dict.update({url_dict_key: news_item.link.text})
+            url_dict_key += 1
+            #url_list.append(news_item.link.text)  # Add to URL List
             print(news_item.pubDate.text)
             print(analyze.sentiment)
             print("\n")
 
-    text_generator_question = raw_input("Would you like to try to generate starter text? (EXPERIMENTAL)")
-
-
-    # TODO: TensorFlow Support on 3.7 is buggy at best... might need to fix versioning.
-    '''
+    text_generator_question = raw_input("Would you like to try to generate starter text? (EXPERIMENTAL) (y/n): ")
     if text_generator_question in ('y', 'n', 'ye', 'no', 'yes', 'Y', 'YE', 'YES', 'N', 'NO'):
         if text_generator_question in ('y', 'ye', 'yes', 'Y', 'YE', 'YES'):
-            prepare_data(news_page) # TODO: PREPARE_DATA()
+            prepare_data(url_dict) # Pass the URL Dictionary
         elif text_generator_question in ('n', 'no', 'N', 'NO'):
             print("Continuing!")
         else:
             print("Invalid Input. Continuing!") # TODO: This is kind of lazy. Fix this with an actually while loop!
-    '''
+
     main()
 
 
-def prepare_data(news_page):
+def prepare_data(url_dict):
 
     '''
 
-    TODO: Pass text from a URL to text_generator(). This data needs to be prepped in this function.
-    TODO: IMPORTANT NOTE: There's going to be some processing involved locally :)
-    # TODO: TensorFlow Support on 3.7 is buggy at best... might need to fix versioning.
+    prepare_data(): Function to prepare data to be processed by the text_generator function. Note that in both this
+    function as well as text_generator, there may be some heavier system load for model training. The function takes
+    a dictionary of URLS to start with.
 
     '''
+
+    valid_response = 0
 
     # IS the data already prepared? Is this a redundant step? AM I REDUNDANT?
-    text_generator(news_page)
+
+    print("Here is the recommended URL listing:")
+    for key in url_dict:
+        print(str(key) + ": " + url_dict[key])
+
+    # Deal with non-integers
+    while True:
+        user_url_choice = raw_input("\nWhich URL would you like to use? (Select Option 0 through " + str(len(url_dict) - 1) + "): ")
+        try:
+            int(user_url_choice)
+            break
+        except:
+            print("Invalid Response! Please select a number between 0 and " + str(len(url_dict) - 1) + ".")
+
+    while valid_response == 0:
+        if int(user_url_choice) < 0 or int(user_url_choice) > len(url_dict):
+            print("Invalid Response! Please select a number between 0 and " + str(len(url_dict) - 1) + ".")
+        elif int(user_url_choice) >= 0 or int(user_url_choice) <= len(url_dict):
+            # Logic to select item
+            data_from_url = Article(str(url_dict[int(user_url_choice)]))
+            data_from_url.download()
+            data_from_url.parse()
+            news_page_file = open("learnme.txt", "w")  # Get Ready to Write
+            news_page_file.write(data_from_url.text)
+            news_page_file.close()
+            valid_response = 1
+        else:
+            print("Invalid Response! Please select a number between 0 and " + str(len(url_dict) - 1) + ".")
+
+    text_generator()
 
 
-def text_generator(news_page):
+def text_generator():
 
     '''
 
-    TODO: Using Keras or Tensorflow?
-    TODO: Get list of URL Links, visit, and use that as the data source for Keras or TensorFlow.
-    # TODO: TensorFlow Support on 3.7 is buggy at best... might need to fix versioning.
+    text_generator() : Function to generate text from source data using TextGenRNN as starter text for phishing
 
     '''
 
@@ -254,12 +290,10 @@ def text_generator(news_page):
     except ImportError:
         raise ImportError('[!] TextGenRNN import Error. Probably having to do with TensorFlow issues. Text Generation (EXPERIMENTAL) may not work!')
 
-    # WIN10:
-    # pip install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.12.0-py3-none-any.whl
-
-    # generate_text = textgenrnn()
-
-    print(news_page)
+    # Generate the Text Now!
+    generate_text = textgenrnn()
+    generate_text.train_from_file('learnme.txt', num_epochs=30) # NOTE: TWEAK EPOCHS HERE
+    generate_text.generate(20, temperature=0.2)  # NOTE: TWEAK MODEL SETTINGS HERE
 
 
 if __name__ == "__main__":
