@@ -14,6 +14,7 @@ from urllib.request import *
 from bs4 import BeautifulSoup as soup
 import lxml
 import tensorflow
+import textgenrnn
 from newspaper import Article
 
 def main():
