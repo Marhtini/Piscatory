@@ -7,12 +7,14 @@
 # TODO: Ability to change threshold values
 # TODO: Add Python Version Checking for TextGenRNN (Use 3.6 for now!)
 
+print("Importing required modules... Please wait...")
 import tweepy
 from textblob import *
 from pip._vendor.distlib.compat import raw_input
 from urllib.request import *
 from bs4 import BeautifulSoup as soup
 import lxml
+print("Loading Tensorflow backend... Please wait...")
 import tensorflow
 import textgenrnn
 from newspaper import Article
