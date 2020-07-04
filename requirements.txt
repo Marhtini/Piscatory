@@ -3,6 +3,6 @@ textblob
 urllib
 bs4
 lxml
-tensorflow
+tf
 newspaper3k
 textgenrnn
