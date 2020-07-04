@@ -43,11 +43,11 @@ def main():
         main()
 
     while check_again == 0:
-        user_decision = raw_input("Would you like to search for another keyword? (y/n)\n")
-        if user_decision in ('y', 'n', 'ye', 'no', 'yes', 'Y', 'YE', 'YES', 'N', 'NO'):
-            if user_decision in ('y', 'ye', 'yes', 'Y', 'YE', 'YES'):
+        user_decision = raw_input("Would you like to search for another keyword? (y/n)\n").lower()
+        if user_decision in ('y', 'n', 'ye', 'no', 'yes'):
+            if user_decision in ('y', 'ye', 'yes'):
                 keyword_analysis()
-            elif user_decision in ('n','no', 'N', 'NO'):
+            elif user_decision in ('n', 'no'):
                 main()
                 check_again = 1
             else:
@@ -90,10 +90,10 @@ def api_configure():
 
     """
 
-    key = 'SET KEY HERE'
-    secret = 'SET SECRET HERE'
-    token = 'SET TOKEN HERE'
-    token_secret = 'SET TOKEN_SECRET HERE'
+    key = ''
+    secret = ''
+    token = ''
+    token_secret = ''
 
     return key, secret, token, token_secret
 
