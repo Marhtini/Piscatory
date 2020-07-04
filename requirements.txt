@@ -1,8 +1,7 @@
 tweepy
 textblob
-urllib
 bs4
 lxml
-tf
+tensorflow
 newspaper3k
 textgenrnn

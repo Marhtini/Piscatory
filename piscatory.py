@@ -15,7 +15,7 @@ from urllib.request import *
 from bs4 import BeautifulSoup as soup
 import lxml
 print("Loading Tensorflow backend... Please wait...")
-import tf
+import tensorflow
 import textgenrnn
 from newspaper import Article
 
